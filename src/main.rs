@@ -1,7 +1,7 @@
 use regex::Regex;
 use std::{
     fs::{self, create_dir_all, File},
-    io::{ErrorKind, Write},
+    io::{stdin, ErrorKind, Write},
 };
 
 fn main() {
@@ -10,8 +10,12 @@ fn main() {
     let files_path = String::from("./files-to-convert");
     // Create the folder if it not exists
     create_dir_all(&formated_files_path).unwrap();
+    println!("Insert the word that we are looking for:");
+    // Get the word that the user want to look for
+    let mut word_regex = String::new();
+    stdin().read_line(&mut word_regex).unwrap();
     // Regular expression to look for the word API
-    let re = Regex::new(r"API").unwrap();
+    let re = Regex::new(&word_regex.trim()).unwrap();
     // Get the files and create the folder files_path if it not exist
     let finded_files = fs::read_dir(&files_path).unwrap_or_else(|err| {
         if err.kind() == ErrorKind::NotFound {
